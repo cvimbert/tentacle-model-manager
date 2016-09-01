@@ -1,0 +1,17 @@
+{
+  "name": "tentacle-model-manager",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Christophe"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/cvimbert/tentacle-model-manager",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
