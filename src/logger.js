@@ -7,21 +7,21 @@
         (typeof global == 'object' && global.global === global && global);
 
     if (typeof define === 'function' && define.amd) {
-        define(["underscore"], function(_) {
-            return factory(_);
+        define(["underscore", "constants"], function(_, Constants) {
+            return factory(_, Constants);
         });
     } else {
-        root.TentacleLogger = factory(_);
+        root.TentacleLogger = factory(root._, root.TentacleManagerConstants);
     }
 
-})(function(_) {
+})(function(_, Constants) {
 
     return function () {
 
         this.sendLog = function (msg, args, level) {
 
             if (!level) {
-                level = Tentacle.LoggerLevels.WARNING;
+                level = Constants.LoggerLevels.WARNING;
             }
 
             var argsToken = "$$";
@@ -39,42 +39,42 @@
 
             } else {
 
-                console.log(Tentacle.Exceptions.badloggerargs);
+                console.log(Constants.Exceptions.badloggerargs);
                 return;
 
             }
 
             switch (level) {
-                case Tentacle.LoggerLevels.LOG:
+                case Constants.LoggerLevels.LOG:
                     console.log(msg);
                     break;
 
-                case Tentacle.LoggerLevels.WARNING:
+                case Constants.LoggerLevels.WARNING:
                     console.warn(msg);
                     break;
 
-                case Tentacle.LoggerLevels.ERROR:
+                case Constants.LoggerLevels.ERROR:
                     console.error(msg);
                     break;
             }
         };
 
         this.log = function (msg, args) {
-            Tentacle.Logger.sendLog(msg, args, Tentacle.LoggerLevels.LOG);
+            this.sendLog(msg, args, Constants.LoggerLevels.LOG);
         };
 
         this.warn = function (msg, args) {
-            Tentacle.Logger.sendLog(msg, args, Tentacle.LoggerLevels.WARNING);
+            this.sendLog(msg, args, Constants.LoggerLevels.WARNING);
         };
 
         this.error = function (msg, args) {
-            Tentacle.Logger.sendLog(msg, args, Tentacle.LoggerLevels.ERROR);
+            this.sendLog(msg, args, Constants.LoggerLevels.ERROR);
         };
 
         // aliases
-        Tentacle.log = this.log;
+        /*Tentacle.log = this.log;
         Tentacle.warn = this.warn;
-        Tentacle.error = this.error;
+        Tentacle.error = this.error;*/
     }
 
 });
