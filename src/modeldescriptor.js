@@ -7,14 +7,14 @@
         (typeof global == 'object' && global.global === global && global);
 
     if (typeof define === 'function' && define.amd) {
-        define(["underscore"], function(_) {
-            return factory(_);
+        define(["underscore", "logger", "constants"], function(_, Logger, Constants) {
+            return factory(_, Logger, Constants);
         });
     } else {
-        root.TentacleModelDescriptor = factory(_);
+        root.TentacleModelDescriptor = factory(root._, root.TentacleLogger, root.TentacleManagerConstants);
     }
 
-})(function(_) {
+})(function(_, Logger, Constants) {
 
     return function (modelManager) {
         var self = this;
@@ -34,7 +34,7 @@
         this.getClassDescriptor = function (classId) {
 
             if (!descriptorsByClasses[classId]) {
-                Tentacle.Logger.log(Tentacle.Exceptions.cantfinddescriptor, classId);
+                Logger.log(Constants.Exceptions.cantfinddescriptor, classId);
                 return null;
             }
 
@@ -80,27 +80,27 @@
 
         this.flattenAttribute = function (item, attribute, attributeId, destDesc, indentation) {
 
-            if (attribute.type !== Tentacle.ModelDecriptorTypes.LINKED_CONDITIONAL_ATTRIBUTES_SET && attribute.type !== Tentacle.ModelDecriptorTypes.INCLUDE) {
+            if (attribute.type !== Constants.ModelDecriptorTypes.LINKED_CONDITIONAL_ATTRIBUTES_SET && attribute.type !== Constants.ModelDecriptorTypes.INCLUDE) {
                 destDesc[attributeId] = attribute;
                 destDesc[attributeId].indentation = indentation;
             }
 
 
-            if (attribute.type === Tentacle.ModelDecriptorTypes.CONDITIONAL_ATTRIBUTES_SET) {
+            if (attribute.type === Constants.ModelDecriptorTypes.CONDITIONAL_ATTRIBUTES_SET) {
 
                 if (item && item.attributes[attributeId]) {
                     var selectedBranch = attribute.attributesSets[item.attributes[attributeId]];
                     flattenByItemAction(item, selectedBranch, destDesc, indentation + 1);
                 }
 
-            } else if (attribute.type === Tentacle.ModelDecriptorTypes.INCLUDE) {
+            } else if (attribute.type === Constants.ModelDecriptorTypes.INCLUDE) {
 
                 var targetDescriptor = modelDescriptor.getClassDescriptor(attribute.includetype).getRaw();
                 self.flattenAttribute(item, targetDescriptor, attributeId, destDesc, indentation);
 
-            } else if (attribute.type === Tentacle.ModelDecriptorTypes.LINKED_CONDITIONAL_ATTRIBUTES_SET) {
+            } else if (attribute.type === Constants.ModelDecriptorTypes.LINKED_CONDITIONAL_ATTRIBUTES_SET) {
 
-                if (attribute.linktype === Tentacle.ModelDecriptorTypes.REFERENCE_ATTRIBUTE_VALUE) {
+                if (attribute.linktype === Constants.ModelDecriptorTypes.REFERENCE_ATTRIBUTE_VALUE) {
                     var refItemId = item.attributes[attribute.linkedreference];
 
                     if (refItemId) {

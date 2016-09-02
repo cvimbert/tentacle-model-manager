@@ -7,14 +7,14 @@
         (typeof global == 'object' && global.global === global && global);
 
     if (typeof define === 'function' && define.amd) {
-        define([], function() {
-            return factory();
+        define(["filter"], function(Filter) {
+            return factory(Filter);
         });
     } else {
-        root.TentacleFiltersSet = factory();
+        root.TentacleFiltersSet = factory(root.TentacleFilter);
     }
 
-})(function() {
+})(function(Filter) {
 
     return function (operand) {
 
@@ -22,7 +22,7 @@
         this.filters = [];
 
         this.addFilter = function (propertyName, propertyValue) {
-            this.filters.push(new Tentacle.Filter(propertyName, propertyValue));
+            this.filters.push(new Filter(propertyName, propertyValue));
         };
     }
 });

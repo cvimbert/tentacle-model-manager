@@ -12,7 +12,8 @@ require.config({
         model: 'src/model',
         logger: 'src/logger',
         filter: 'src/filter',
-        filterset: 'src/filtersset',
-        constants: 'src/constants'
+        filtersset: 'src/filtersset',
+        constants: 'src/constants',
+        uuid: 'node_modules/node-uuid/uuid'
     }
 });

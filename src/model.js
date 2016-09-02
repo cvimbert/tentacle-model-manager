@@ -7,14 +7,14 @@
         (typeof global == 'object' && global.global === global && global);
 
     if (typeof define === 'function' && define.amd) {
-        define(["underscore"], function(_) {
-            return factory(_);
+        define(["underscore", "uuid", "constants"], function(_, uuid, Constants) {
+            return factory(_, uuid, Constants);
         });
     } else {
-        root.TentacleModel = factory(_);
+        root.TentacleModel = factory(root._, root.uuid, root.TentacleManagerConstants);
     }
 
-})(function(_) {
+})(function(_, uuid, Constants) {
 
     return function (jsonModel, mmanager) {
         var self = this;
@@ -99,11 +99,11 @@
 
                     switch (attribute.type) {
 
-                        case Tentacle.BaseObjectTypes.STRING:
+                        case Constants.BaseObjectTypes.STRING:
                             newAttributes[attributeId] = "";
                             break;
 
-                        case Tentacle.BaseObjectTypes.NUMBER:
+                        case Constants.BaseObjectTypes.NUMBER:
                             if (attribute.defaultvalue) {
                                 newAttributes[attributeId] = attribute.defaultvalue;
                             } else {
@@ -111,7 +111,7 @@
                             }
                             break;
 
-                        case Tentacle.BaseObjectTypes.BOOLEAN:
+                        case Constants.BaseObjectTypes.BOOLEAN:
                             if (attribute.defaultvalue) {
                                 newAttributes[attributeId] = attribute.defaultvalue;
                             } else {
@@ -119,11 +119,11 @@
                             }
                             break;
 
-                        case Tentacle.ModelDecriptorTypes.CONDITIONAL_ATTRIBUTES_SET:
+                        case Constants.ModelDecriptorTypes.CONDITIONAL_ATTRIBUTES_SET:
                             newAttributes[attributeId] = "";
                             break;
 
-                        case Tentacle.ModelDecriptorTypes.COLLECTION:
+                        case Constants.ModelDecriptorTypes.COLLECTION:
                             newAttributes[attributeId] = [];
                             break;
 
@@ -132,7 +132,7 @@
                     }
                 } else {
 
-                    if (attribute.type === Tentacle.ModelDecriptorTypes.CONDITIONAL_ATTRIBUTES_SET) {
+                    if (attribute.type === Constants.ModelDecriptorTypes.CONDITIONAL_ATTRIBUTES_SET) {
 
                         newAttributes[attributeId] = self.attributes[attributeId];
                         getObject(attribute.attributesSets[self.attributes[attributeId]], newAttributes);
