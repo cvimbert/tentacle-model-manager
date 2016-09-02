@@ -7,14 +7,14 @@
         (typeof global == 'object' && global.global === global && global);
 
     if (typeof define === 'function' && define.amd) {
-        define(["underscore"], function(_) {
-            return factory(_);
+        define(["underscore", "model", "modeldescriptor", "filter", "filtersset", "constants"], function(_, Model, ModelDescriptor, Filter, FiltersSet, Constants) {
+            return factory(_, Model, ModelDescriptor, Filter, FiltersSet, Constants);
         });
     } else {
-        root.TentacleModelManager = factory(_);
+        root.TentacleModelManager = factory(_, root.TentacleModel, root.TentacleModelDescriptor, root.TentacleFilter, root.TentacleFiltersSet, root.TentacleManagerConstants);
     }
 
-})(function(_) {
+})(function(_, Model, ModelDescriptor, Filter, FiltersSet, Constants) {
 
     return function () {
         var models = {};
@@ -26,13 +26,13 @@
 
 
         this.init = function (jsonModelDescriptor) {
-            modelDescriptor = new Tentacle.ModelDescriptor(this);
+            modelDescriptor = ModelDescriptor(this);
             modelDescriptor.load(jsonModelDescriptor);
             //self.loadDefaultModel();
         };
 
         this.addModel = function (type, register, presets) {
-            var model = new Tentacle.Model();
+            var model = new Model();
             model.create(type, this, presets);
 
             if (register !== false)
@@ -62,7 +62,7 @@
                         modelsByType[item.type] = {};
                     }
 
-                    modelsByType[item.type][item.uid] = new Tentacle.Model(item, self);
+                    modelsByType[item.type][item.uid] = new Model(item, self);
                     models[item.uid] = modelsByType[item.type][item.uid];
                 });
 
@@ -142,7 +142,7 @@
 
                     var model = modelsByType[type][id];
 
-                    if (filter instanceof Tentacle.Filter) {
+                    if (filter instanceof Filter) {
 
                         if (model.get(filter.propertyName)) {
 
@@ -154,16 +154,16 @@
                             // message d'erreur ou warning
                         }
 
-                    } else if (filter instanceof Tentacle.FiltersSet) {
+                    } else if (filter instanceof FiltersSet) {
 
                         // deux cas : ou / et
                         // on verifie si on doit choisir le modèle courant
 
                         var pushToList;
 
-                        if (filter.operand === Tentacle.FilterOperand.AND) {
+                        if (filter.operand === Constants.FilterOperand.AND) {
                             pushToList = true;
-                        } else if (filter.operand === Tentacle.FilterOperand.OR) {
+                        } else if (filter.operand === Constants.FilterOperand.OR) {
                             pushToList = false;
                         }
 
@@ -175,14 +175,14 @@
 
                                 var equals = model.get(currentFilter.propertyName) === currentFilter.propertyValue;
 
-                                if (filter.operand === Tentacle.FilterOperand.AND) {
+                                if (filter.operand === Constants.FilterOperand.AND) {
 
                                     if (!equals) {
                                         pushToList = false;
                                         break;
                                     }
 
-                                } else if (filter.operand === Tentacle.FilterOperand.OR) {
+                                } else if (filter.operand === Constants.FilterOperand.OR) {
 
                                     if (equals) {
                                         pushToList = true;

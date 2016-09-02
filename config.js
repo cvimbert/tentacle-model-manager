@@ -12,6 +12,7 @@ require.config({
         model: 'src/model',
         logger: 'src/logger',
         filter: 'src/filter',
-        filterset: 'src/filtersset'
+        filterset: 'src/filtersset',
+        constants: 'src/constants'
     }
 });
