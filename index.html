@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="node_modules/requirejs/require.js"></script>
+    <script src="config.js"></script>
+    <script src="data/modeldescriptor.js"></script>
+    <title>Example</title>
+</head>
+<body>
+<script>
+    require(["modelmanager"], function(ModelManager) {
+
+        var manager = new ModelManager();
+        manager.init(modelDescriptor);
+
+        var model = manager.addModel("Action", false, {
+            actiontype: "displaysprite"
+        });
+        console.log(model);
+    });
+</script>
+</body>
+</html>

@@ -26,7 +26,7 @@
 
 
         this.init = function (jsonModelDescriptor) {
-            modelDescriptor = ModelDescriptor(this);
+            modelDescriptor = new ModelDescriptor(this);
             modelDescriptor.load(jsonModelDescriptor);
             //self.loadDefaultModel();
         };
