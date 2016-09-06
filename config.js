@@ -6,7 +6,7 @@ require.config({
 
     },
     paths: {
-        underscore: 'node_modules/underscore/underscore',
+        underscore: 'bower_components/underscore/underscore',
         modelmanager: 'src/modelmanager',
         modeldescriptor: 'src/modeldescriptor',
         model: 'src/model',
@@ -14,6 +14,6 @@ require.config({
         filter: 'src/filter',
         filtersset: 'src/filtersset',
         constants: 'src/constants',
-        uuid: 'node_modules/node-uuid/uuid'
+        uuid: 'bower_components/uuid/uuid'
     }
 });
