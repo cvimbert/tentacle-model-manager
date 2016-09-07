@@ -133,7 +133,13 @@
         this.getModelByType = function (type, filter) {
 
             if (!filter) {
+
+                if (!modelsByType[type]) {
+                    modelsByType[type] = {};
+                }
+
                 return modelsByType[type];
+
             } else {
 
                 var filtered = {};
